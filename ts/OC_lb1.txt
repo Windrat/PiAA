@@ -1,0 +1,126 @@
+Лог лабораторной работы №1 по ОС
+Тема: Файловые системы ОС Linux
+
+Дата:
+windrath@windrath-VirtualBox:~$ date
+Thu Apr  2 21:18:21 MSK 2026
+
+Идентификация исполнителя:
+windrath@windrath-VirtualBox:~$ who
+windrath seat0        Apr  3 16:16 (login screen)
+windrath tty2         Apr  3 16:16 (tty2)
+# Левкович Юлия Сергеевна группа 4345
+
+
+-----ПРОФИЛЬ СИСТЕМЫ-----
+
+Идентификация виртуальной машины:
+windrath@windrath-VirtualBox:~$ systemd-detect-virt
+oracle
+
+Информация о процессоре:
+windrath@windrath-VirtualBox:~$ lscpu
+Architecture:                x86_64
+  CPU op-mode(s):            32-bit, 64-bit
+  Address sizes:             39 bits physical, 48 bits virtual
+  Byte Order:                Little Endian
+CPU(s):                      2
+  On-line CPU(s) list:       0,1
+Vendor ID:                   GenuineIntel
+  Model name:                11th Gen Intel(R) Core(TM) i5-11400 @ 2.60GHz
+    CPU family:              6
+    Model:                   167
+    Thread(s) per core:      1
+    Core(s) per socket:      2
+    Socket(s):               1
+    Stepping:                1
+    BogoMIPS:                5184.00
+    Flags:                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht sy
+                             scall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid tsc_known_freq pni pclmulqdq 
+                             ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm abm 
+                             3dnowprefetch fsgsbase bmi1 avx2 bmi2 invpcid rdseed adx clflushopt sha_ni arat md_clear flush_l1d arch
+                             _capabilities
+Virtualization features:     
+  Hypervisor vendor:         KVM
+  Virtualization type:       full
+Caches (sum of all):         
+  L1d:                       96 KiB (2 instances)
+  L1i:                       64 KiB (2 instances)
+  L2:                        1 MiB (2 instances)
+  L3:                        24 MiB (2 instances)
+NUMA:                        
+  NUMA node(s):              1
+  NUMA node0 CPU(s):         0,1
+Vulnerabilities:             
+  Gather data sampling:      Unknown: Dependent on hypervisor status
+  Ghostwrite:                Not affected
+  Indirect target selection: Mitigation; Aligned branch/return thunks
+  Itlb multihit:             Not affected
+  L1tf:                      Not affected
+  Mds:                       Not affected
+  Meltdown:                  Not affected
+  Mmio stale data:           Vulnerable: Clear CPU buffers attempted, no microcode; SMT Host state unknown
+  Reg file data sampling:    Not affected
+  Retbleed:                  Vulnerable
+  Spec rstack overflow:      Not affected
+  Spec store bypass:         Vulnerable
+  Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+  Spectre v2:                Mitigation; Retpolines; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Retpoline
+  Srbds:                     Not affected
+  Tsa:                       Not affected
+  Tsx async abort:           Not affected
+  Vmscape:                   Not affected
+
+Идентификация ОС:
+windrath@windrath-VirtualBox:~$ uname -a
+Linux windrath-VirtualBox 6.14.0-37-generic #37~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Nov 20 10:25:38 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+
+
+-----ОСНОВНАЯ ЧАСТЬ ЛАБОРАТОРНОЙ РАБОТЫ-----
+
+1.1 - Чтение стандартными средствами ОС:
+windrath@windrath-VirtualBox:~$ stat test.txt
+  File: test.txt
+  Size: 269       	Blocks: 8          IO Block: 4096   regular file
+Device: 8,2	Inode: 1443970     Links: 1
+Access: (0664/-rw-rw-r--)  Uid: ( 1000/windrath)   Gid: ( 1000/windrath)
+Access: 2026-04-03 16:17:36.265472684 +0300
+Modify: 2026-03-02 21:27:54.841342510 +0300
+Change: 2026-04-03 23:52:08.296930857 +0300
+ Birth: 2026-03-02 21:27:54.839857378 +0300
+# Утилита позволяет вывести информацию о размере файла в байтах, количестве занятых блоков на диске, ID устройства, где хранится файл, правах доступа и временных метках.
+
+1.2 Чтение утилитой file (Тип и характеристики)
+windrath@windrath-VirtualBox:~$ file test.txt
+test.txt: ASCII text
+# Файл содержит ASCII текст
+
+1.3.1 - Поиск по ключевым словам утилитой strings в бинарном файле
+windrath@windrath-VirtualBox:~$ strings /usr/bin/gcc | grep -Ei "model|software"
+unknown TLS model %qs
+-Winvalid-memory-model
+-fsimd-cost-model=
+-ftls-model=
+-fvect-cost-model
+-fvect-cost-model=
+-mcmodel=
+Use given x86-64 code model.
+Thread model: %s
+Copyright %s 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+Known code models (for use with the -mcmodel= option):
+unknown LTO partitioning model %qs
+unknown vectorizer cost model %qs
+Whether software prefetch hints should be issued for non-constant strides.
+Hardware autoprefetcher scheduler model control flag.  Number of lookahead cycles the model looks into, at '0' only enable instruction sorting heuristic.  Disabled by default.
+Warn when an atomic memory model parameter is known to be outside the valid range.
+Warn if a simd directive is overridden by the vectorizer cost model.
+Perform software pipelining of inner loops during selective scheduling.
+Perform software pipelining of outer loops during selective scheduling.
+-fsimd-cost-model=[unlimited|dynamic|cheap|very-cheap]	Specifies the vectorization cost model for code marked with a simd directive.
+turns on all software runtime checking (an abbreviation for -fnil -frange -findex -fwholediv -fcase -freturn -fwholevalue -ffloatvalue)
+-ftls-model=[global-dynamic|local-dynamic|initial-exec|local-exec]	Set the default thread-local storage code generation model.
+Enables the dynamic vectorizer cost model.  Preserved for backward compatibility.
+-fvect-cost-model=[unlimited|dynamic|cheap|very-cheap]	Specifies the cost model for vectorization.
+-mlarge-data-threshold=<number>	Data greater than given threshold will go into .ldata section in x86-64 medium model.
+# Поиск по software выдаёт информацию, связанную с лицензией. Поиск по model выдаст информацию о поддерживаемый микроархетиктурах.
